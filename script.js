@@ -1,4 +1,4 @@
-const IMAGE_PATH = './images/';
+const IMAGE_PATH = './Images/'
 
 // מילוני המיפוי הדו-ממדיים עבור נכסי התמונות
 const dishImages = {
