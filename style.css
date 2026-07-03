@@ -1,0 +1,167 @@
+* { 
+    box-sizing: border-box; 
+    font-family: 'Heebo', sans-serif; 
+}
+
+body { 
+    margin: 0; 
+    padding: 0; 
+    height: 100vh; 
+    overflow: hidden; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    background: #f0f2f5; 
+}
+
+.app-container { 
+    display: flex; 
+    gap: 25px; 
+    width: 96vw; 
+    height: 94vh; 
+    max-width: 1300px; 
+    padding: 0;
+}
+
+/* --- אזור ימין (טפסים) --- */
+.controls-section { 
+    display: grid; 
+    grid-template-columns: 1fr 1fr; 
+    grid-template-rows: 1fr 1fr auto; 
+    gap: 15px; 
+    width: 45%; 
+    height: 100%;
+}
+
+.control-box { 
+    background-color: #fff; 
+    border-radius: 16px; 
+    padding: 20px; 
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05); 
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #eaeaea;
+}
+
+.control-box h3 { 
+    margin-top: 0; 
+    margin-bottom: 15px; 
+    color: #2c3e50; 
+    font-size: 18px; 
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.badge {
+    font-size: 10px;
+    background: #e74c3c;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 12px;
+}
+
+/* === עיצוב ה- UX/UI של הכפתורים (Chips) === */
+.options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.options-grid label { 
+    position: relative; 
+    cursor: pointer; 
+}
+
+.options-grid input { 
+    position: absolute; 
+    opacity: 0; 
+    cursor: pointer; 
+}
+
+.chip {
+    display: block;
+    padding: 8px 10px;
+    text-align: center;
+    background: #f8f9fa;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    color: #5f6368;
+    font-size: 14px;
+    font-weight: 500;
+    border: 1px solid #dadce0;
+}
+
+.options-grid label:hover .chip { background: #f1f3f4; }
+.options-grid input:checked ~ .chip {
+    background: #fff3e0; 
+    color: #e65100; 
+    border-color: #ff9800;
+    font-weight: 700;
+    box-shadow: 0 2px 6px rgba(255, 152, 0, 0.2);
+}
+
+.options-grid input:disabled ~ .chip {
+    opacity: 0.4;
+    cursor: not-allowed;
+    background: #f1f1f1;
+}
+
+.client-details { grid-column: 1 / span 2; padding: 15px 20px;}
+.details-grid { display: grid; grid-template-columns: 1fr 1fr 120px; gap: 15px; align-items: end;}
+
+.input-group label { display: block; font-weight: 500; margin-bottom: 5px; font-size: 14px; color: #555;}
+.input-group input { 
+    width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 14px; outline: none; transition: 0.2s;
+}
+.input-group input:focus { border-color: #ff9800; box-shadow: 0 0 0 2px rgba(255, 152, 0, 0.2); }
+
+.submit-btn {
+    height: 40px; background-color: #e65100; color: white; border: none; cursor: pointer;
+    font-weight: 700; font-size: 15px; border-radius: 8px; transition: 0.3s;
+}
+.submit-btn:disabled { background-color: #bdc3c7; opacity: 0.6; cursor: not-allowed; }
+.submit-btn:not(:disabled):hover { background-color: #cc4800; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(230, 81, 0, 0.3);}
+
+/* --- אזור שמאל (תצוגה מקדימה) --- */
+.preview-section { 
+    flex: 1; background-color: #fff; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); 
+    display: flex; flex-direction: column; overflow: hidden; border: 1px solid #eaeaea;
+}
+
+.preview-header { background-color: #2c3e50; color: white; padding: 20px; text-align: center; }
+.preview-header h2 { margin: 0; font-size: 22px; font-weight: 400; }
+#display-name { font-weight: 700; color: #ffeb3b; }
+
+/* התיקון לקו המפריד: שורת התוספות מקבלת auto במקום גובה קבוע */
+.preview-grid { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto 1fr; flex: 1; }
+
+.grid-topping { grid-column: 1; grid-row: 1; border-bottom: 1px solid #f0f0f0; border-left: 1px solid #f0f0f0; padding: 20px; }
+.grid-drink { grid-column: 2; grid-row: 1; border-bottom: 1px solid #f0f0f0; padding: 20px; }
+.grid-main-dish { grid-column: 1 / span 2; grid-row: 2; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative;}
+
+.preview-grid h3 { margin: 0 0 15px 0; font-size: 16px; color: #7f8c8d; font-weight: 500;}
+
+/* תמונות ומצב ריק */
+.empty-placeholder { text-align: center; color: #95a5a6; }
+.empty-placeholder .icon { font-size: 48px; display: block; margin-bottom: 10px; opacity: 0.5;}
+.empty-placeholder p { margin: 0; font-size: 18px; font-weight: 500;}
+
+.grid-main-dish img { max-height: 320px; max-width: 100%; object-fit: contain; animation: fadeIn 0.4s ease-in-out;}
+
+@keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+
+.items-gallery { display: flex; flex-wrap: wrap; gap: 10px; justify-content: flex-start; }
+.faded-img { width: 45px; height: 45px; object-fit: contain; opacity: 0.25; filter: grayscale(100%); transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+.faded-img.active-img { opacity: 1; filter: none; transform: scale(1.2); }
+
+/* --- מודל סיכום (Modal) --- */
+.modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); backdrop-filter: blur(4px);}
+.modal-content { background-color: #fff; margin: 8% auto; border-radius: 16px; width: 400px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); overflow: hidden;}
+.modal-header { background-color: #4CAF50; color: white; padding: 20px; text-align: center; }
+.modal-header h2 { margin: 0; font-size: 20px; }
+.modal-body { padding: 25px; }
+.modal-body p { font-size: 16px; margin-bottom: 12px; color: #444; border-bottom: 1px solid #f0f0f0; padding-bottom: 8px;}
+#close-modal-btn { display: block; width: calc(100% - 50px); padding: 12px; margin: 0 auto 25px; background-color: #2c3e50; color: white; border: none; cursor: pointer; border-radius: 8px; font-size: 16px; font-weight: 700;}
+#close-modal-btn:hover { background-color: #1a252f; }
