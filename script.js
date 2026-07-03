@@ -1,111 +1,145 @@
+﻿const IMAGE_PATH = './images/';
+
+// מילוני המיפוי הדו-ממדיים עבור נכסי התמונות המשולבות
 const dishImages = {
-    'פנה': { 'פסטו': 'PHOTO-2026-07-02-23-39-23.jpg', 'שמנת': 'PHOTO-2026-07-02-23-39-24 2.jpg', 'פטריות': 'PHOTO-2026-07-02-23-39-24 3.jpg', 'עגבניות': 'PHOTO-2026-07-02-23-39-24.jpg', 'רוזה': 'PHOTO-2026-07-02-23-39-23 3.jpg', 'ללא רוטב': 'PHOTO-2026-07-02-23-39-23 2.jpg' },
-    'פוזילי': { 'פסטו': 'PHOTO-2026-07-02-23-39-11.jpg', 'שמנת': 'PHOTO-2026-07-02-23-39-15.jpg', 'פטריות': 'PHOTO-2026-07-02-23-39-11 5.jpg', 'עגבניות': 'PHOTO-2026-07-02-23-39-11 4.jpg',  'רוזה': 'PHOTO-2026-07-02-23-39-11 3.jpg', 'ללא רוטב': 'PHOTO-2026-07-02-23-39-11 2.jpg' },
-    'ספגטי': { 'פסטו': 'PHOTO-2026-07-02-23-39-07.jpg', 'שמנת': 'PHOTO-2026-07-02-23-39-07 5.jpg', 'עגבניות': 'PHOTO-2026-07-02-23-39-07 4.jpg', 'רוזה': 'PHOTO-2026-07-02-23-39-07 3.jpg', 'ללא רוטב': 'PHOTO-2026-07-02-23-39-07 2.jpg' },
-    'פרפלה': { 'פסטו': 'PHOTO-2026-07-02-23-39-39 2.jpg', 'פטריות': 'PHOTO-2026-07-02-23-39-39.jpg', 'רוזה': 'PHOTO-2026-07-02-23-39-40 2.jpg', 'עגבניות': 'PHOTO-2026-07-02-23-39-40 3.jpg', 'שמנת': 'PHOTO-2026-07-02-23-39-40 4.jpg', 'ללא רוטב': 'PHOTO-2026-07-02-23-39-40.jpg' }
+    'פנה': { 'פסטו': 'Penne_Pesto_Sauce.png', 'שמנת': 'Penne_Cream_Sauce.png', 'פטריות': 'Penne_Mushroom_Sauce.png', 'עגבניות': 'Penne_Tomato_Sauce.png', 'רוזה': 'Penne_Rosa_Sauce.png', 'ללא רוטב': 'Penne_Plain.png' },
+    'פוזילי': { 'פסטו': 'Fusilli_Pesto_Sauce.png', 'שמנת': 'Fusilli_Cream_Sauce.png', 'פטריות': 'Fusilli_Mushroom_Sauce.png', 'עגבניות': 'Fusilli_Tomato_Sauce.png', 'רוזה': 'Fusilli_Rosa_Sauce.png', 'ללא רוטב': 'Fusilli_Plain.png' },
+    'ספגטי': { 'פסטו': 'Spaghetti_Pesto_Sauce.png', 'שמנת': 'Spaghetti_Cream_Sauce.png', 'פטריות': 'Spaghetti_Mushroom_Sauce.png', 'עגבניות': 'Spaghetti_Tomato_Sauce.png', 'רוזה': 'Spaghetti_Rosa_Sauce.png', 'ללא רוטב': 'Spaghetti_Plain.png' },
+    'פרפלה': { 'פסטו': 'Farfalle_Pesto_Sauce.png', 'שמנת': 'Farfalle_Cream_Sauce.png', 'פטריות': 'Farfalle_Mushroom_Sauce.png', 'עגבניות': 'Farfalle_Tomato_Sauce.png', 'רוזה': 'Farfalle_Rosa_Sauce.png', 'ללא רוטב': 'Farfalle_Plain.png' }
 };
 
-const imageAssets = {
-    toppings: { 'טבעות בצל': 'PHOTO-2026-07-02-23-40-09.jpg', 'סלט ירקות': 'PHOTO-2026-07-02-23-40-10 2.jpg', 'ציפס': 'PHOTO-2026-07-02-23-40-10 3.jpg', 'לחם שום': 'PHOTO-2026-07-02-23-40-10 4.jpg', 'סלט יווני': 'PHOTO-2026-07-02-23-40-10 5.jpg', 'גבינת פרמזן': 'PHOTO-2026-07-02-23-40-10.jpg' },
-    drinks: { 'תה חם': 'PHOTO-2026-07-02-23-39-55 4.jpg', 'מים': 'PHOTO-2026-07-02-23-39-55 5.jpg', 'אספרסו': 'PHOTO-2026-07-02-23-39-55 6.jpg', 'קולה': 'PHOTO-2026-07-02-23-39-55.jpg', 'תה קר': 'PHOTO-2026-07-02-23-39-54 2.jpg', 'מיץ תפוזים': 'PHOTO-2026-07-02-23-39-54.jpg', 'מיץ תפוחים קר': 'PHOTO-2026-07-02-23-39-55 2.jpg', 'פאנטה': 'PHOTO-2026-07-02-23-39-55 3.jpg' }
-};
-
+// הפניות לאלמנטים קבועים מה-DOM
 const mainDishImg = document.getElementById('main-dish-img');
 const emptyPlaceholder = document.getElementById('empty-plate-placeholder');
 const nameInput = document.getElementById('customer-name');
 const submitBtn = document.getElementById('submit-btn');
 const displayNameSpan = document.getElementById('display-name');
 const sauceInputs = document.querySelectorAll('input[name="sauce"]');
+const pastaInputs = document.querySelectorAll('input[name="pasta-shape"]');
+const modal = document.getElementById('summary-modal');
 
-// חסימת הרטבים בהתחלה עד בחירת פסטה
-sauceInputs.forEach(input => input.disabled = true);
+// חסימה התחלתית של בחירת רוטב (עד שתיבחר צורת פסטה)
+sauceInputs.forEach(function(input) {
+    input.disabled = true;
+});
 
-function createFadedImages(containerId, assetsDict, typePrefix) {
-    const container = document.getElementById(containerId);
-    Object.keys(assetsDict).forEach(itemName => {
-        const img = document.createElement('img');
-        img.src = `images/${assetsDict[itemName]}`;
-        img.id = `img-${typePrefix}-${itemName.replace(/\s+/g, '-')}`;
-        img.className = 'faded-img'; 
-        container.appendChild(img);
-    });
-}
-createFadedImages('toppings-container', imageAssets.toppings, 'top');
-createFadedImages('drinks-container', imageAssets.drinks, 'drink');
-
+// פונקציית בדיקת תקינות חיובית (Validation) לטופס
 function checkFormValidity() {
     const hasName = nameInput.value.trim() !== '';
     const hasPastaRadio = document.querySelector('input[name="pasta-shape"]:checked') !== null;
     submitBtn.disabled = !(hasName && hasPastaRadio);
 }
 
-nameInput.addEventListener('input', (e) => {
+nameInput.addEventListener('input', function(e) {
     displayNameSpan.textContent = e.target.value || '...';
     checkFormValidity();
 });
 
-function updateMainDishImage() {
+// עדכון רטבים זמינים בהתאם לבסיס המנה שנבחרה
+function updateAvailableSauces() {
     const selectedPasta = document.querySelector('input[name="pasta-shape"]:checked');
-    const selectedSauce = document.querySelector('input[name="sauce"]:checked');
-    
-    if (selectedPasta) {
-        emptyPlaceholder.style.display = 'none';
-        
-        const pasta = selectedPasta.value;
-        const sauce = selectedSauce ? selectedSauce.value : 'ללא רוטב';
-        
-        if (dishImages[pasta] && dishImages[pasta][sauce]) {
-            mainDishImg.src = `images/${dishImages[pasta][sauce]}`;
-            mainDishImg.style.display = 'block';
-        } else {
-            mainDishImg.style.display = 'none'; 
-        }
+    if (!selectedPasta) return;
+
+    const availableSauces = Object.keys(dishImages[selectedPasta.value] || {});
+    let checkedSauceStillValid = false;
+
+    sauceInputs.forEach(function(input) {
+        const isAvailable = availableSauces.includes(input.value);
+        input.disabled = !isAvailable;
+        if (input.checked && isAvailable) checkedSauceStillValid = true;
+        else if (input.checked) input.checked = false;
+    });
+
+    if (!checkedSauceStillValid) {
+        document.querySelector('input[name="sauce"][value="ללא רוטב"]').checked = true;
     }
 }
 
-document.querySelectorAll('input[name="pasta-shape"]').forEach(radio => {
-    radio.addEventListener('change', () => {
-        sauceInputs.forEach(input => input.disabled = false);
-        
-        if(!document.querySelector('input[name="sauce"]:checked')) {
-            document.querySelector('input[name="sauce"][value="ללא רוטב"]').checked = true;
-        }
-        
+// עדכון קובץ תמונת המנה העיקרית המשולבת בצלחת
+function updateMainDishImage() {
+    const selectedPasta = document.querySelector('input[name="pasta-shape"]:checked');
+    const selectedSauce = document.querySelector('input[name="sauce"]:checked');
+    if (!selectedPasta) return;
+
+    const pasta = selectedPasta.value;
+    const sauce = selectedSauce ? selectedSauce.value : 'ללא רוטב';
+    const matchingImage = dishImages[pasta] && dishImages[pasta][sauce];
+
+    if (matchingImage) {
+        mainDishImg.src = IMAGE_PATH + matchingImage;
+        mainDishImg.style.display = 'block';
+        emptyPlaceholder.style.display = 'none';
+    }
+}
+
+// האזנה לשינויים בפקדי הרדיו של המנה
+pastaInputs.forEach(function(radio) {
+    radio.addEventListener('change', function() {
+        updateAvailableSauces();
         updateMainDishImage();
         checkFormValidity();
     });
 });
 
-sauceInputs.forEach(radio => {
+sauceInputs.forEach(function(radio) {
     radio.addEventListener('change', updateMainDishImage);
 });
 
-function handleCheckboxSelection(inputSelector, prefix) {
-    document.querySelectorAll(inputSelector).forEach(checkbox => {
-        checkbox.addEventListener('change', (e) => {
-            const itemName = e.target.value.replace(/\s+/g, '-');
-            const imgElement = document.getElementById(`img-${prefix}-${itemName}`);
-            if (imgElement) imgElement.classList.toggle('active-img', e.target.checked);
-        });
+// תיקון השגיאה הווירטואלית: שינוי ויזואלי של התמונות הקיימות ב-HTML בעת סימון תיבות בחירה
+document.querySelectorAll('input[name="topping"], input[name="drink"]').forEach(function(cb) {
+    cb.addEventListener('change', function(e) {
+        // התאמה ישירה ל-ID של התמונות כפי שהן מופיעות ב-HTML (למשל: img_Garlic_Bread)
+        const img = document.getElementById('img_' + e.target.value);
+        if (img) {
+            img.classList.toggle('active-img', e.target.checked); // הדגשה או עמעום השקיפות
+        }
     });
-}
-handleCheckboxSelection('input[name="topping"]', 'top');
-handleCheckboxSelection('input[name="drink"]', 'drink');
+});
 
-const modal = document.getElementById('summary-modal');
-submitBtn.addEventListener('click', () => {
+// הפקת חלון סיכום ההזמנה במודאל
+submitBtn.addEventListener('click', function() {
     document.getElementById('summary-name').textContent = nameInput.value;
     document.getElementById('summary-pasta').textContent = document.querySelector('input[name="pasta-shape"]:checked')?.value;
     document.getElementById('summary-sauce').textContent = document.querySelector('input[name="sauce"]:checked')?.value || 'ללא רוטב';
-    
-    const toppings = Array.from(document.querySelectorAll('input[name="topping"]:checked')).map(cb => cb.value).join(', ') || 'ללא';
-    const drinks = Array.from(document.querySelectorAll('input[name="drink"]:checked')).map(cb => cb.value).join(', ') || 'ללא';
-    
-    document.getElementById('summary-toppings').textContent = toppings;
-    document.getElementById('summary-drinks').textContent = drinks;
+
+    document.getElementById('summary-toppings').textContent = Array.from(document.querySelectorAll('input[name="topping"]:checked')).map(function(cb) { return cb.value; }).join(', ') || 'ללא תוספות';
+    document.getElementById('summary-drinks').textContent = Array.from(document.querySelectorAll('input[name="drink"]:checked')).map(function(cb) { return cb.value; }).join(', ') || 'ללא שתייה';
     document.getElementById('summary-notes').textContent = document.getElementById('customer-notes').value || 'אין הערות';
 
     modal.style.display = 'block';
 });
 
-document.getElementById('close-modal-btn').addEventListener('click', () => { modal.style.display = 'none'; });
+// סגירת חלון המודאל מפעילה את פונקציית הניקוי והאתחול הנדרשת
+document.getElementById('close-modal-btn').addEventListener('click', function() {
+    modal.style.display = 'none';
+    cleanTexts();
+});
+
+// פונקציית ניקוי ואתחול הטופס (cleanTexts) חזרה למצב ההתחלתי
+function cleanTexts() {
+    nameInput.value = '';
+    document.getElementById('customer-notes').value = '';
+    displayNameSpan.textContent = '...';
+
+    // איפוס פקדי רדיו
+    document.querySelectorAll('input[type="radio"]').forEach(function(radio) {
+        radio.checked = false;
+    });
+    sauceInputs.forEach(function(input) {
+        input.disabled = true;
+    });
+
+    // איפוס צ'ק-בוקסים והחזרת כל תמונות הגלריה לחצי שקיפות
+    document.querySelectorAll('input[type="checkbox"]').forEach(function(cb) {
+        cb.checked = false;
+    });
+    document.querySelectorAll('.faded-img').forEach(function(img) {
+        img.className = 'faded-img';
+    });
+
+    mainDishImg.style.display = 'none';
+    mainDishImg.src = '';
+    emptyPlaceholder.style.display = 'block';
+
+    checkFormValidity();
+}
